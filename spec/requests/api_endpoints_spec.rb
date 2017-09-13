@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe 'Items API Endpoints' do
   context 'Get api/v1/items' do
     it 'sends all items' do
