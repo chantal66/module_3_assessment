@@ -34,6 +34,7 @@ RSpec.describe 'Items API Endpoints' do
       item = JSON.parse(response.body)
 
       expect(response).to be_success
+      expect(response).to have_http_status(200)
       expect(item).to be_a Hash
       expect(item).to have_key 'id'
       expect(item).to have_key 'name'
@@ -43,6 +44,31 @@ RSpec.describe 'Items API Endpoints' do
       expect(item['description']).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
       expect(item).not_to have_key 'created_at'
       expect(item).not_to have_key 'updated_at'
+    end
+  end
+
+  context 'POST api/v1/items' do
+    it 'can create an item' do
+      item_params = { item: {
+          name: 'Test Name',
+          description: 'Lorem Ipsum',
+          image_url: 'image.jpg'
+      }}
+
+      expect {
+        post '/api/v1/items/', item_params
+      }.to change{Item.count}.by(1)
+
+      item = JSON.parse(response.body)
+      expect(response).to have_http_status(201)
+      expect(item).to be_a Hash
+      expect(item).to have_key 'name'
+      expect(item).to have_key 'description'
+      expect(item).to have_key 'image_url'
+      expect(item).not_to have_key 'created_at'
+      expect(item).not_to have_key 'updated_at'
+      expect(item['name']).to eq('Test Name')
+      expect(item['description']).to eq('Lorem Ipsum')
     end
   end
 end
