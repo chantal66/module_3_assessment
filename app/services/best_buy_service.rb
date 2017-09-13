@@ -1,6 +1,5 @@
 class BestBuyService
-
-  attr_reader :zip
+  
   def initialize(zip)
     @zip = zip
     @conn = Faraday.new(url: "https://api.bestbuy.com") do |faraday|
@@ -10,7 +9,7 @@ class BestBuyService
   end
 
   def find_stores
-    get_url("v1/stores(area(#{@zip},25))?format=json&show=storeType,longName,city,distance,phone&apiKey=#{ENV['best_buy_key']}")
+    get_url("v1/stores(area(#{zip},25))?format=json&show=storeType,longName,city,distance,phone&apiKey=#{ENV['best_buy_key']}")
   end
 
   def get_url(url)
@@ -21,4 +20,21 @@ class BestBuyService
   def self.find_stores(zip)
     new(zip).find_stores
   end
+
+  def total_stores
+    get_url_for_total("v1/stores(area(#{zip},25))?format=json&show=storeType,longName,city,distance,phone&apiKey=#{ENV['best_buy_key']}")
+  end
+  
+  def get_url_for_total(url)
+    response = @conn.get(url)
+    JSON.parse(response.body, symbolize_names: true)[:total]
+  end
+
+  def self.total_stores(zip)
+    new(zip).total_stores
+  end
+
+  private
+
+  attr_reader :zip
 end

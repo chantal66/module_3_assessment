@@ -20,4 +20,8 @@ class Store
       new(store)
     end
   end
+
+  def self.total_stores(zip)
+    BestBuyService.total_stores(zip)
+  end
 end
