@@ -14,10 +14,10 @@ class Store
     @type     = store[:storeType]
   end
 
-  # def self.find_stores(zip)
-  #   stores = BestBuyService.find_stores(zip)
-  #   stores.map do |store|
-  #     new(store)
-  #   end
-  # end
+  def self.find_stores(zip)
+    store = BestBuyService.find_stores(zip)
+    store.map do |store|
+      new(store)
+    end
+  end
 end
