@@ -18,6 +18,8 @@ RSpec.describe 'Items API Endpoints' do
       expect(item).to have_key 'name'
       expect(item).to have_key 'description'
       expect(item).to have_key 'image_url'
+      expect(item['name']).to eq('Default Name')
+      expect(item['description']).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
       expect(item).not_to have_key 'created_at'
       expect(item).not_to have_key 'updated_at'
     end
