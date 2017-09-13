@@ -13,4 +13,11 @@ class Store
     @phone    = store[:phone]
     @type     = store[:storeType]
   end
+
+  # def self.find_stores(zip)
+  #   stores = BestBuyService.find_stores(zip)
+  #   stores.map do |store|
+  #     new(store)
+  #   end
+  # end
 end

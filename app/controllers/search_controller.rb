@@ -15,6 +15,6 @@ class SearchController < ApplicationController
      end
 
     @total = JSON.parse(response.body, symbolize_names: true)[:total]
-
+    # binding.pry
   end
 end
