@@ -24,4 +24,25 @@ RSpec.describe 'Items API Endpoints' do
       expect(item).not_to have_key 'updated_at'
     end
   end
+
+  context 'GET api/v1/items/:id' do
+    it 'send 1 item' do
+      item = create(:item)
+
+      get "/api/v1/items/#{item.id}"
+
+      item = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(item).to be_a Hash
+      expect(item).to have_key 'id'
+      expect(item).to have_key 'name'
+      expect(item).to have_key 'description'
+      expect(item).to have_key 'image_url'
+      expect(item['name']).to eq('Default Name')
+      expect(item['description']).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+      expect(item).not_to have_key 'created_at'
+      expect(item).not_to have_key 'updated_at'
+    end
+  end
 end
