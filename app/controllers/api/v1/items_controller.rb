@@ -1,4 +1,6 @@
 class Api::V1::ItemsController < ApplicationController
+  before_action :set_item, only: [:destroy]
+
   def index
     render json: Item.all
   end
@@ -16,9 +18,22 @@ class Api::V1::ItemsController < ApplicationController
     end
   end
 
+  def destroy
+    if @item
+      @item.destroy
+      render json: {success:"Item deleted"}, status: 204
+    else
+      render json: {error: "Item not found"}, status: 404
+    end
+  end
+
   private
 
   def item_params
     params.require(:item).permit(:name, :description, :image_url)
+  end
+
+  def set_item
+    @item = Item.find(params[:id])
   end
 end

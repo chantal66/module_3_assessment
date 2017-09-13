@@ -71,4 +71,16 @@ RSpec.describe 'Items API Endpoints' do
       expect(item['description']).to eq('Lorem Ipsum')
     end
   end
+
+  context 'DELETE /api/v1/items/:id' do
+    it 'can delete an item' do
+      item = create(:item)
+
+      expect {
+        delete "/api/v1/items/#{item.id}"
+      }.to change{Item.count}.from(1).to(0)
+
+      expect(response.status).to eq 204
+    end
+  end
 end
