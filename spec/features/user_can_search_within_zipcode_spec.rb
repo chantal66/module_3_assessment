@@ -10,22 +10,22 @@ require 'rails_helper'
 
 RSpec.feature 'user can search for a store in zipcode' do
   it 'should see first 10 stores within 25 miles' do
+    VCR.use_cassette("features/user_can_search_within_zipcode") do
+      visit root_path
 
-    visit root_path
+      fill_in "Find Stores near your ZIP", with: "80202"
 
-    fill_in "Find Stores near your ZIP", with: "80202"
+      click_button "Search"
 
-    click_button "Search"
-
-    expect(current_path).to eq search_path
-    expect(stores.count).to eq(10)
-    expect(page).to have_content('17 Stores within 25 miles')
-    expect(page).to have_content '10 Stores'
-    expect(stores.first).to have_content "Name:"
-    expect(stores.first).to have_content "City:"
-    expect(stores.first).to have_content "Distance:"
-    expect(stores.first).to have_content "Phone Number:"
-    expect(stores.first).to have_content "Store Type:"
-    expect(page).to have_link "Next Page", search_path
+      expect(current_path).to eq search_path
+      expect(page).to have_content('17 Stores within 25 miles')
+      expect(page).to have_content '10 Stores'
+      expect(page).to have_content "Name:"
+      expect(page).to have_content "City:"
+      expect(page).to have_content "Distance:"
+      expect(page).to have_content "Phone Number:"
+      expect(page).to have_content "Store Type:"
+      expect(page).to have_link "Next Page", search_path
+    end
   end
 end

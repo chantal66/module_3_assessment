@@ -34,6 +34,19 @@ class BestBuyService
     new(zip).total_stores
   end
 
+  def find_page
+    get_url_for_page("v1/stores(area(#{zip},25))?format=json&show=storeType,longName,city,distance,phone&apiKey=#{ENV['best_buy_key']}")
+  end
+
+  def get_url_for_page(url)
+    response = @conn.get(url)
+    JSON.parse(response.body, symbolize_names: true)
+  end
+
+  def self.find_page(zip, page)
+    new(zip, page).find_page
+  end
+
   private
 
   attr_reader :zip

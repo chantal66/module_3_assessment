@@ -24,4 +24,12 @@ class Store
   def self.total_stores(zip)
     BestBuyService.total_stores(zip)
   end
+
+  def self.find_page(zip, page)
+    stores = BestBuyService.find_page(zip, page)
+    stores.map do |store|
+      new(store)
+    end
+  end
+
 end
