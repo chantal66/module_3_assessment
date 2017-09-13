@@ -1,7 +1,8 @@
 class BestBuyService
   
-  def initialize(zip)
+  def initialize(zip, page = 2)
     @zip = zip
+    @page = page
     @conn = Faraday.new(url: "https://api.bestbuy.com") do |faraday|
       faraday.headers["X-API-KEY"] = ENV["best_buy_key"]
       faraday.adapter Faraday.default_adapter
@@ -9,7 +10,7 @@ class BestBuyService
   end
 
   def find_stores
-    get_url("v1/stores(area(#{zip},25))?format=json&show=storeType,longName,city,distance,phone&apiKey=#{ENV['best_buy_key']}")
+    get_url("v1/stores(area(#{zip},25))?format=json&show=storeType,longName,city,distance,phone&cursorMark=*&apiKey=#{ENV['best_buy_key']}")
   end
 
   def get_url(url)
@@ -22,7 +23,7 @@ class BestBuyService
   end
 
   def total_stores
-    get_url_for_total("v1/stores(area(#{zip},25))?format=json&show=storeType,longName,city,distance,phone&apiKey=#{ENV['best_buy_key']}")
+    get_url_for_total("v1/stores(area(#{zip},25))?format=json&show=storeType,longName,city,distance,phone&page=1&apiKey=#{ENV['best_buy_key']}")
   end
   
   def get_url_for_total(url)
@@ -35,12 +36,12 @@ class BestBuyService
   end
 
   def find_page
-    get_url_for_page("v1/stores(area(#{zip},25))?format=json&show=storeType,longName,city,distance,phone&apiKey=#{ENV['best_buy_key']}")
+    get_url_for_page("v1/stores(area(#{zip},25))?format=json&show=storeType,longName,city,distance,phone&#{page}&cursorMark=*&apiKey=#{ENV['best_buy_key']}")
   end
 
   def get_url_for_page(url)
     response = @conn.get(url)
-    JSON.parse(response.body, symbolize_names: true)
+    JSON.parse(response.body, symbolize_names: true)[:page]
   end
 
   def self.find_page(zip, page)

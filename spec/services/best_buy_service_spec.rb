@@ -16,9 +16,8 @@ RSpec.describe BestBuyService do
   end
 
   it 'returns a total number of stores found' do
-    VCR.use_cassette('services/user_can_search_store') do
+    VCR.use_cassette('feature/user_can_search_within_zipcode') do
       total_stores = BestBuyService.total_stores('80202')
-
       expect(total_stores).to eq(17)
     end
   end
