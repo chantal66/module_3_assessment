@@ -6,9 +6,15 @@ class SearchController < ApplicationController
          faraday.adapter Faraday.default_adapter
      end
 
-       response = @conn.get("v1/stores(area(#{@zip},25))?format=json&show=storeType,longName,city,distance,phone&apiKey=#{ENV['best_buy_key']}")
+     response = @conn.get("v1/stores(area(#{@zip},25))?format=json&show=storeType,longName,city,distance,phone&apiKey=#{ENV['best_buy_key']}")
 
-       results = JSON.parse(response.body, symbolize_names: true)
+     results = JSON.parse(response.body, symbolize_names: true)[:stores]
+
+     @results = results.map do |store|
+      Store.new(store)
+     end
+
+    @total = JSON.parse(response.body, symbolize_names: true)[:total]
 
   end
 end

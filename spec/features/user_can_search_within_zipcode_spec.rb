@@ -19,8 +19,8 @@ RSpec.feature 'user can search for a store in zipcode' do
 
     expect(current_path).to eq search_path
     expect(stores.count).to eq(10)
-    expect(page).to have_content('Stores within 25 miles in 80202')
-    expect(page).to have_content '17 Total Stores'
+    expect(page).to have_content('17 Stores within 25 miles')
+    expect(page).to have_content '10 Stores'
     expect(stores.first).to have_content "Name:"
     expect(stores.first).to have_content "City:"
     expect(stores.first).to have_content "Distance:"

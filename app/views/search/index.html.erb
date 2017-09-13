@@ -1,0 +1,13 @@
+<h2> <%= @total %> Stores within 25 miles</h2>
+<h3>Now showing <%= @results.count %> Stores for this page</h3>
+
+<div class="container">
+  <% @results.each do |store|%>
+      Name: <%= store.name %> <br>
+      City: <%= store.city %> <br>
+      Distance: <%= store.distance %> <br>
+      Phone Number: <%= store.phone %> <br>
+      Store Type: <%= store.type %> <br>
+      ----------------------------------------<br>
+  <%	end  %>
+</div>
